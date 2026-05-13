@@ -1,53 +1,55 @@
-import { AlertTriangle, X } from 'lucide-react'
-
 export default function ConfirmDialog({ isOpen, onConfirm, onCancel, participantName }) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onCancel}
-      />
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9000,
+      background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16,
+    }}>
+      <div style={{
+        background: '#fff', borderRadius: 12, width: 400, maxWidth: '90vw',
+        padding: 32, textAlign: 'center',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+      }}>
+        {/* Warning icon */}
+        <div style={{
+          width: 56, height: 56, borderRadius: '50%',
+          background: '#fef2f2', margin: '0 auto 16px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 28,
+        }}>⚠️</div>
 
-      {/* Dialog */}
-      <div className="relative glass rounded-2xl p-6 w-full max-w-sm shadow-2xl animate-slide-up border border-rose-500/20">
-        <button
-          onClick={onCancel}
-          className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors"
-        >
-          <X size={18} />
-        </button>
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#1f2937', marginBottom: 10 }}>
+          Delete Feedback?
+        </h3>
+        <p style={{ fontSize: 14, color: '#6b7280', lineHeight: 1.6 }}>
+          Are you sure you want to delete feedback from{' '}
+          <strong style={{ color: '#1f2937' }}>{participantName}</strong>?
+          This action cannot be undone.
+        </p>
 
-        <div className="flex flex-col items-center text-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center">
-            <AlertTriangle size={28} className="text-rose-400" />
-          </div>
-
-          <div>
-            <h3 className="text-white font-bold text-lg font-sora">Delete Feedback?</h3>
-            <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-              Are you sure you want to delete the feedback from{' '}
-              <span className="text-white font-semibold">{participantName}</span>?
-              This action cannot be undone.
-            </p>
-          </div>
-
-          <div className="flex gap-3 w-full mt-2">
-            <button
-              onClick={onCancel}
-              className="flex-1 py-2.5 rounded-xl border border-[#334155] text-slate-300 text-sm font-medium hover:bg-[#1E293B] transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={onConfirm}
-              className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-sm font-semibold transition-colors"
-            >
-              Delete
-            </button>
-          </div>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 24 }}>
+          <button
+            onClick={onCancel}
+            style={{
+              border: '1px solid #e5e7eb', background: '#fff', color: '#6b7280',
+              padding: '10px 28px', borderRadius: 8, fontWeight: 500, fontSize: 14, cursor: 'pointer',
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            style={{
+              background: '#EF4444', color: '#fff', border: 'none',
+              padding: '10px 28px', borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: 'pointer',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = '#dc2626'}
+            onMouseLeave={e => e.currentTarget.style.background = '#EF4444'}
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>

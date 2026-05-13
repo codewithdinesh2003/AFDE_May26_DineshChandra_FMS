@@ -1,62 +1,32 @@
-import { useEffect, useRef, useState } from 'react'
+import { TrendingUp } from 'lucide-react'
 
-function useCountUp(target, duration = 1000) {
-  const [count, setCount] = useState(0)
-  const frameRef = useRef(null)
-
-  useEffect(() => {
-    if (typeof target !== 'number' || isNaN(target)) return
-    const start = performance.now()
-    const animate = (now) => {
-      const elapsed = now - start
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(target * eased)
-      if (progress < 1) frameRef.current = requestAnimationFrame(animate)
-    }
-    frameRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(frameRef.current)
-  }, [target, duration])
-
-  return count
-}
-
-export default function StatCard({ title, value, icon: Icon, color, subtitle, isDecimal = false }) {
-  const numericValue = parseFloat(value) || 0
-  const animated = useCountUp(numericValue)
-
-  const displayValue = typeof value === 'string' && isNaN(value)
-    ? value
-    : isDecimal
-    ? animated.toFixed(1)
-    : Math.round(animated).toString()
-
-  const colorMap = {
-    indigo: { bg: 'rgba(99,102,241,0.12)', icon: '#6366F1', border: 'rgba(99,102,241,0.25)' },
-    emerald: { bg: 'rgba(16,185,129,0.12)', icon: '#10B981', border: 'rgba(16,185,129,0.25)' },
-    amber: { bg: 'rgba(245,158,11,0.12)', icon: '#F59E0B', border: 'rgba(245,158,11,0.25)' },
-    rose: { bg: 'rgba(244,63,94,0.12)', icon: '#F43F5E', border: 'rgba(244,63,94,0.25)' },
-  }
-  const c = colorMap[color] || colorMap.indigo
-
+export default function StatCard({ title, value, subtitle, subtitleColor = '#10B981', icon: Icon, iconBg, iconColor }) {
   return (
-    <div
-      className="card-hover rounded-2xl p-5 flex flex-col gap-3"
-      style={{
-        background: 'rgba(30,41,59,0.55)',
-        backdropFilter: 'blur(12px)',
-        border: `1px solid ${c.border}`,
-      }}
-    >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-slate-400 text-sm font-medium">{title}</p>
-          <p className="text-3xl font-bold text-white mt-1 font-sora">{displayValue}</p>
-          {subtitle && <p className="text-slate-500 text-xs mt-1">{subtitle}</p>}
-        </div>
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: c.bg }}>
-          <Icon size={22} style={{ color: c.icon }} />
-        </div>
+    <div style={{
+      background: '#fff', borderRadius: 12, padding: '20px 24px',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+    }}>
+      {/* Left */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{ fontSize: 13, color: '#6b7280', fontWeight: 500, marginBottom: 6 }}>{title}</p>
+        <p style={{ fontSize: 28, color: '#1f2937', fontWeight: 700, letterSpacing: '-0.5px', lineHeight: 1.1 }}>
+          {value}
+        </p>
+        {subtitle && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6 }}>
+            <TrendingUp size={12} style={{ color: subtitleColor }} />
+            <span style={{ fontSize: 12, color: subtitleColor }}>{subtitle}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Right icon circle */}
+      <div style={{
+        width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
+        background: iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Icon size={22} style={{ color: iconColor }} />
       </div>
     </div>
   )

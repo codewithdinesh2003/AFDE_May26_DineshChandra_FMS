@@ -1,57 +1,51 @@
 import { useState } from 'react'
-import { Star } from 'lucide-react'
 
-const LABELS = ['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent']
-const COLORS = ['', '#EF4444', '#F97316', '#EAB308', '#84CC16', '#10B981']
+const LABELS = { 1: 'Poor', 2: 'Fair', 3: 'Good', 4: 'Very Good', 5: 'Excellent' }
 
-export default function RatingStars({ value = 0, onChange, readOnly = false, size = 24 }) {
+const SIZE_MAP = { sm: 14, md: 20, lg: 28 }
+
+export default function RatingStars({ value = 0, onChange, readOnly = false, size = 'md' }) {
   const [hovered, setHovered] = useState(0)
 
-  const display = hovered || value
-
   if (readOnly) {
+    const px = SIZE_MAP[size] || SIZE_MAP.md
     return (
-      <div className="flex items-center gap-1">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            size={size}
-            fill={star <= value ? '#EAB308' : 'transparent'}
-            color={star <= value ? '#EAB308' : '#475569'}
-            strokeWidth={1.5}
-          />
+      <span style={{ fontSize: px, letterSpacing: 2, lineHeight: 1 }}>
+        {[1, 2, 3, 4, 5].map(s => (
+          <span key={s} style={{ color: s <= value ? '#f59e0b' : '#e5e7eb' }}>
+            {s <= value ? '★' : '☆'}
+          </span>
         ))}
-      </div>
+      </span>
     )
   }
 
+  const active = hovered || value
   return (
-    <div className="flex flex-col items-start gap-1.5">
-      <div className="flex items-center gap-1">
-        {[1, 2, 3, 4, 5].map((star) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div style={{ display: 'flex', gap: 8 }}>
+        {[1, 2, 3, 4, 5].map(s => (
           <button
-            key={star}
+            key={s}
             type="button"
-            onClick={() => onChange && onChange(star)}
-            onMouseEnter={() => setHovered(star)}
+            onClick={() => onChange && onChange(s)}
+            onMouseEnter={() => setHovered(s)}
             onMouseLeave={() => setHovered(0)}
-            className="transition-transform duration-150 hover:scale-110 focus:outline-none"
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontSize: 32, padding: 0, lineHeight: 1,
+              color: s <= active ? (hovered ? '#fbbf24' : '#f59e0b') : '#d1d5db',
+              transition: 'color 0.1s, transform 0.1s',
+              transform: s <= active ? 'scale(1.1)' : 'scale(1)',
+            }}
           >
-            <Star
-              size={size}
-              fill={star <= display ? COLORS[display] : 'transparent'}
-              color={star <= display ? COLORS[display] : '#475569'}
-              strokeWidth={1.5}
-              style={{ transition: 'fill 0.15s, color 0.15s' }}
-            />
+            ★
           </button>
         ))}
       </div>
-      {display > 0 && (
-        <span className="text-sm font-medium" style={{ color: COLORS[display] }}>
-          {LABELS[display]}
-        </span>
-      )}
+      <span style={{ fontSize: 12, color: active ? '#6366F1' : '#9ca3af', fontWeight: active ? 500 : 400 }}>
+        {active ? `(${active} - ${LABELS[active]})` : '(Select 1 to 5 stars)'}
+      </span>
     </div>
   )
 }
