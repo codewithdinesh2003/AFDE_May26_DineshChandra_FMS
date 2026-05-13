@@ -1,11 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, PlusCircle, List, Search, ChevronDown, MessageSquareText } from 'lucide-react'
+import { LayoutDashboard, PlusCircle, List, ChevronDown, MessageSquareText } from 'lucide-react'
 
 const navItems = [
   { to: '/',         label: 'Dashboard',       icon: LayoutDashboard, end: true },
   { to: '/submit',   label: 'Submit Feedback',  icon: PlusCircle },
   { to: '/feedback', label: 'Feedback List',    icon: List, end: true },
-  { to: '/feedback', label: 'Search & Filter',  icon: Search },
 ]
 
 export default function Sidebar({ isOpen, onClose }) {
