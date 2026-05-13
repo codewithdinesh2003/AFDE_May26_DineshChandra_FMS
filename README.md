@@ -131,9 +131,8 @@ Frontend runs at: `http://localhost:5173`
 
 ## Screenshots
 
-> _Add screenshots here after running the app._
+- <img width="1919" height="894" alt="Screenshot 2026-05-13 134250" src="https://github.com/user-attachments/assets/6a936914-4a90-4b81-aac7-5b9e8393e775" />
 
-- `screenshots/dashboard.png`
 - `screenshots/submit.png`
 - `screenshots/feedback-list.png`
 - `screenshots/feedback-detail.png`
